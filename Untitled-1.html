@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertice Nox Swear — Vestuario de Autor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0d0b;
+    --ink2: #1c1a16;
+    --sand: #f2ede4;
+    --cream: #faf8f4;
+    --gold: #b89a5a;
+    --gold-light: #d4b87a;
+    --muted: #7a7060;
+    --line: rgba(184,154,90,0.25);
+    --radius: 2px;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--sand);
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(14,13,11,0.95), transparent);
+    backdrop-filter: blur(2px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(14,13,11,0.97);
+    border-color: var(--line);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    color: var(--sand);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+    cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    opacity: 1;
+    color: var(--gold-light);
+  }
+
+  .nav-cta {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--gold);
+    padding: 0.55rem 1.4rem;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: background 0.2s, transform 0.1s;
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: flex-end;
+    padding: 0 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 70% 40%, rgba(184,154,90,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 20% 80%, rgba(184,154,90,0.05) 0%, transparent 60%),
+      var(--ink2);
+  }
+
+  .hero-lines {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  .hero-lines::before, .hero-lines::after {
+    content: '';
+    position: absolute;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+  .hero-lines::before {
+    width: 700px; height: 700px;
+    right: -200px; top: -200px;
+  }
+  .hero-lines::after {
+    width: 400px; height: 400px;
+    right: 50px; top: 50px;
+  }
+
+  .hero-badge {
+    position: absolute; top: 30%;
+    right: 6rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    writing-mode: vertical-rl;
+    opacity: 0.7;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.9s 0.4s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--gold);
+    padding: 0.9rem 2.2rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-ghost {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sand);
+    background: transparent;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 4rem;
+  }
+
+  .section-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold-light); }
+
+  .divider {
+    width: 60px; height: 1px;
+    background: var(--gold);
+    margin: 2rem 0;
+    opacity: 0.6;
+  }
+
+  /* CATALOG */
+  #catalogo { background: var(--ink2); }
+
+  .filter-bar {
+    display: flex; gap: 0; margin-bottom: 3rem;
+    border: 1px solid var(--line);
+    width: fit-content;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.4rem;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { color: var(--sand); }
+  .filter-btn.active {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: var(--ink);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+
+  .product-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--ink2);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .product-placeholder {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    color: var(--line);
+    user-select: none;
+    transition: transform 0.4s;
+  }
+  .product-card:hover .product-placeholder { transform: scale(1.1); }
+
+  .product-overlay {
+    position: absolute; inset: 0;
+    background: rgba(14,13,11,0.7);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .product-card:hover .product-overlay { opacity: 1; }
+
+  .overlay-btn {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--gold);
+    padding: 0.6rem 1.4rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .overlay-btn:hover { background: var(--gold-light); }
+
+  .product-tag {
+    position: absolute; top: 1rem; left: 1rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--ink);
+    padding: 0.25rem 0.6rem;
+  }
+
+  .product-info {
+    padding: 1.2rem 1.4rem 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .product-cat {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .product-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .product-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .product-price {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 300;
+    color: var(--gold-light);
+  }
+
+  .product-sizes {
+    display: flex; gap: 0.3rem;
+  }
+  .size-dot {
+    font-size: 0.6rem;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 0.15rem 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10,9,7,0.9);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--ink2);
+    border: 1px solid var(--line);
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-img {
+    background: var(--ink);
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: var(--line);
+  }
+
+  .modal-body {
+    padding: 2rem 2rem 2rem 2rem;
+    display: flex; flex-direction: column;
+  }
+
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: transparent; border: none;
+    color: var(--muted); font-size: 1.4rem;
+    cursor: pointer; line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--gold); }
+
+  .modal-cat { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .modal-name { font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; color: var(--cream); margin-bottom: 0.75rem; line-height: 1.15; }
+  .modal-price { font-family: var(--font-display); font-size: 1.5rem; color: var(--gold-light); margin-bottom: 1.5rem; }
+  .modal-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; flex: 1; }
+
+  .size-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .size-options { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .size-option {
+    font-size: 0.72rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--line);
+    color: var(--sand);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: transparent;
+    font-family: var(--font-body);
+  }
+  .size-option:hover, .size-option.selected { border-color: var(--gold); background: rgba(184,154,90,0.1); color: var(--gold-light); }
+
+  .modal-actions { display: flex; gap: 0.75rem; }
+
+  /* PEDIDO ESPECIAL */
+  #pedido { background: var(--ink); }
+
+  .pedido-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .pedido-info p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+
+  .pedido-steps {
+    display: flex; flex-direction: column; gap: 1.2rem;
+    margin-top: 2rem;
+  }
+  .step {
+    display: flex; gap: 1.2rem; align-items: flex-start;
+  }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--line);
+    line-height: 1;
+    min-width: 2.5rem;
+  }
+  .step-text h4 {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+    font-weight: 400;
+  }
+  .step-text p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* FORM */
+  .form-section {
+    background: var(--ink2);
+    border: 1px solid var(--line);
+    padding: 2.5rem;
+  }
+
+  .form-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 2rem;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .form-input, .form-select, .form-textarea {
+    background: var(--ink);
+    border: 1px solid var(--line);
+    color: var(--sand);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+  .form-select option { background: var(--ink2); }
+  .form-textarea { resize: vertical; min-height: 100px; }
+
+  .char-options {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+  }
+  .char-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    font-family: var(--font-body);
+  }
+  .char-tag.selected {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(184,154,90,0.08);
+  }
+
+  .form-note {
+    font-size: 0.73rem;
+    color: var(--muted);
+    margin-top: -0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* SUCCESS MESSAGE */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+  .success-msg.show { display: block; }
+  .success-icon {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .success-msg h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+  .success-msg p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* SOBRE */
+  #sobre { background: var(--ink2); }
+  .sobre-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
+  .sobre-text p { font-size: 0.9rem; color: var(--muted); line-height: 1.9; margin-bottom: 1.2rem; }
+  .sobre-stat {
+    text-align: right;
+    border-right: 1px solid var(--line);
+    padding-right: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* CONTATO BAR */
+  .contato-bar {
+    background: var(--gold);
+    padding: 2.5rem 4rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .contato-bar h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--ink);
+    flex: 1;
+  }
+  .contato-bar h3 em { font-style: italic; }
+  .contato-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .contato-link {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.65rem 1.4rem;
+    border: 1px solid var(--ink);
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .contato-link:hover { background: rgba(14,13,11,0.1); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    padding: 3rem 4rem 2rem;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 2rem; flex-wrap: wrap;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .footer-txt { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.05em; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* TAB NAV */
+  .tab-section { display: none; }
+  .tab-section.active { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 2rem 4rem; }
+    section { padding: 4rem 2rem; }
+    .pedido-grid, .sobre-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .modal { grid-template-columns: 1fr; }
+    .modal-img { aspect-ratio: 16/9; }
+    .contato-bar { padding: 2rem; }
+    footer { padding: 2rem; flex-direction: column; align-items: flex-start; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#" onclick="showSection('home'); return false;">Maison Verd</a>
+  <ul class="nav-links">
+    <li><a class="active" onclick="showSection('home')" href="#">Inicio</a></li>
+    <li><a onclick="showSection('catalogo')" href="#">Catalogo</a></li>
+    <li><a onclick="showSection('pedido')" href="#">Pedido Especial</a></li>
+    <li><a onclick="showSection('sobre')" href="#">Sobre</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showSection('pedido')">Encomendar</button>
+</nav>
+
+<!-- ==================== HOME ==================== -->
+<div id="sec-home" class="tab-section active">
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-lines"></div>
+    <span class="hero-badge">Nova Colecao — Outono 2025</span>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Vestuario de Autor</p>
+      <h1 class="hero-title">Cada peca,<br><em>uma historia</em><br>que voce vive.</h1>
+      <p class="hero-sub">Roupas concebidas com intencao — tecidos selecionados, cortes estudados, identidade singular.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showSection('catalogo')">Ver Catalogo</button>
+        <button class="btn-ghost" onclick="showSection('pedido')">Pedido Especial</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature strip -->
+  <div style="background:var(--ink2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.8rem 4rem;display:flex;gap:3rem;flex-wrap:wrap;justify-content:space-between;">
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div style="font-family:var(--font-display);font-size:1.6rem;color:var(--gold);margin-bottom:0.2rem;">♟</div>
+      <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Pecas exclusivas</p>
+    </div>
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div style="font-family:var(--font-display);font-size:1.6rem;color:var(--gold);margin-bottom:0.2rem;">◇</div>
+      <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Tecidos premium</p>
+    </div>
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div style="font-family:var(--font-display);font-size:1.6rem;color:var(--gold);margin-bottom:0.2rem;">✦</div>
+      <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Confeccao artesanal</p>
+    </div>
+    <div style="text-align:center;flex:1;min-width:160px;">
+      <div style="font-family:var(--font-display);font-size:1.6rem;color:var(--gold);margin-bottom:0.2rem;">↻</div>
+      <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Pedidos sob medida</p>
+    </div>
+  </div>
+
+  <!-- Destaques -->
+  <section style="background:var(--ink);padding:5rem 4rem;">
+    <div style="margin-bottom:3rem;">
+      <p class="section-eyebrow">Destaques</p>
+      <h2 class="section-title">As pecas mais <em>procuradas</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="product-grid" id="destaque-grid"></div>
+    <div style="margin-top:3rem;text-align:center;">
+      <button class="btn-ghost" onclick="showSection('catalogo')">Ver catalogo completo</button>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== CATALOGO ==================== -->
+<div id="sec-catalogo" class="tab-section">
+  <section id="catalogo" style="padding-top:8rem;">
+    <div style="margin-bottom:3rem;">
+      <p class="section-eyebrow">Colecao 2025</p>
+      <h2 class="section-title">Catalogo <em>completo</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-btn active" data-cat="todos">Todos</button>
+      <button class="filter-btn" data-cat="camisetas">Camisetas</button>
+      <button class="filter-btn" data-cat="calcas">Calcas</button>
+      <button class="filter-btn" data-cat="vestidos">Vestidos</button>
+      <button class="filter-btn" data-cat="casacos">Casacos</button>
+      <button class="filter-btn" data-cat="acessorios">Acessorios</button>
+    </div>
+    <div class="product-grid" id="catalog-grid"></div>
+    <div style="margin-top:3rem;text-align:center;padding-bottom:2rem;">
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1.2rem;">Nao encontrou o que procura?</p>
+      <button class="btn-primary" onclick="showSection('pedido')">Fazer pedido especial</button>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PEDIDO ESPECIAL ==================== -->
+<div id="sec-pedido" class="tab-section">
+  <section id="pedido" style="padding-top:8rem;">
+    <div class="pedido-grid">
+      <!-- INFO -->
+      <div class="pedido-info">
+        <p class="section-eyebrow">Fora do catalogo</p>
+        <h2 class="section-title">Pedido <em>especial</em></h2>
+        <div class="divider"></div>
+        <p>Se voce tem em mente algo que nao encontrou no nosso catalogo — um modelo especifico, uma combinacao de tecido e cor, um item personalizado — este e o canal certo.</p>
+        <p>Cada pedido especial e tratado de forma unica, com contato direto para alinhamento de detalhes antes da producao.</p>
+
+        <div class="pedido-steps">
+          <div class="step">
+            <span class="step-num">01</span>
+            <div class="step-text">
+              <h4>Descreva sua ideia</h4>
+              <p>Quanto mais detalhes, melhor. Tipo de peca, tecido, cor, uso pretendido.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">02</span>
+            <div class="step-text">
+              <h4>Receba um orcamento</h4>
+              <p>Em ate 48h entraremos em contato com prazo e valor estimados.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">03</span>
+            <div class="step-text">
+              <h4>Aprovacao e producao</h4>
+              <p>Apos sua aprovacao, iniciamos a confeccao com acompanhamento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div>
+        <div class="form-section" id="form-container">
+          <h3 class="form-title">Descreva sua peca</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nome completo</label>
+              <input class="form-input" type="text" id="f-nome" placeholder="Seu nome">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contato (WhatsApp ou e-mail)</label>
+              <input class="form-input" type="text" id="f-contato" placeholder="(27) 9 0000-0000">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tipo de peca</label>
+              <select class="form-select" id="f-tipo">
+                <option value="">Selecione...</option>
+                <option>Camiseta / Blusa</option>
+                <option>Calca / Short</option>
+                <option>Vestido / Saia</option>
+                <option>Casaco / Jaqueta</option>
+                <option>Conjunto</option>
+                <option>Acessorio (boina, cachecol, etc.)</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tamanho / Medidas</label>
+              <input class="form-input" type="text" id="f-tam" placeholder="P / M / G ou medidas">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Caracteristicas desejadas</label>
+            <div class="char-options" id="char-tags">
+              <span class="char-tag" onclick="toggleTag(this)">Minimalista</span>
+              <span class="char-tag" onclick="toggleTag(this)">Estruturado</span>
+              <span class="char-tag" onclick="toggleTag(this)">Fluido</span>
+              <span class="char-tag" onclick="toggleTag(this)">Oversized</span>
+              <span class="char-tag" onclick="toggleTag(this)">Slim fit</span>
+              <span class="char-tag" onclick="toggleTag(this)">Bordado</span>
+              <span class="char-tag" onclick="toggleTag(this)">Estampado</span>
+              <span class="char-tag" onclick="toggleTag(this)">Cores neutras</span>
+              <span class="char-tag" onclick="toggleTag(this)">Cores vivas</span>
+              <span class="char-tag" onclick="toggleTag(this)">Preto & branco</span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:0.5rem;">
+            <label class="form-label">Tecido preferido</label>
+            <select class="form-select" id="f-tecido">
+              <option value="">Sem preferencia</option>
+              <option>Algodao</option>
+              <option>Linho</option>
+              <option>Viscose</option>
+              <option>Seda / Cetim</option>
+              <option>Moletom</option>
+              <option>Denim</option>
+              <option>Malha</option>
+              <option>Outro / Descrever abaixo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Descricao detalhada</label>
+            <textarea class="form-textarea" id="f-descricao" placeholder="Descreva tudo que imagina para a peca — referencias, ocasiao de uso, cores, detalhes especificos..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Orcamento estimado</label>
+              <select class="form-select" id="f-orcamento">
+                <option value="">Sem restricao</option>
+                <option>Ate R$ 150</option>
+                <option>R$ 150 — R$ 300</option>
+                <option>R$ 300 — R$ 500</option>
+                <option>R$ 500 — R$ 800</option>
+                <option>Acima de R$ 800</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Prazo desejado</label>
+              <select class="form-select" id="f-prazo">
+                <option value="">Flexivel</option>
+                <option>Ate 1 semana</option>
+                <option>1 a 2 semanas</option>
+                <option>2 a 4 semanas</option>
+                <option>Mais de 1 mes</option>
+              </select>
+            </div>
+          </div>
+
+          <p id="form-error" style="color:#e24b4a;font-size:0.78rem;display:none;margin-bottom:0.75rem;">Por favor, preencha os campos obrigatorios: nome, contato, tipo de peca e descricao.</p>
+
+          <button class="btn-primary" onclick="submitForm()" style="width:100%;padding:1rem;font-size:0.75rem;letter-spacing:0.2em;">Enviar pedido</button>
+          <p style="font-size:0.68rem;color:var(--muted);margin-top:0.75rem;text-align:center;">Retornaremos em ate 48 horas com o orcamento.</p>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="form-section success-msg" id="success-msg">
+          <div class="success-icon">✦</div>
+          <h3>Pedido recebido!</h3>
+          <p>Obrigado pelo seu contato. Nossa equipe ira analisar sua solicitacao e retornar em ate <strong style="color:var(--gold-light);">48 horas</strong> com um orcamento personalizado.</p>
+          <br>
+          <button class="btn-ghost" onclick="resetForm()" style="margin-top:1rem;">Fazer outro pedido</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== SOBRE ==================== -->
+<div id="sec-sobre" class="tab-section">
+  <section id="sobre" style="padding-top:8rem;">
+    <div class="sobre-grid">
+      <div class="sobre-text">
+        <p class="section-eyebrow">A marca</p>
+        <h2 class="section-title">Feito com <em>intencao</em></h2>
+        <div class="divider"></div>
+        <p>A Maison Verd nasceu da crenca de que roupa e uma forma de expressao — nao um produto de massa. Cada peca e pensada do corte ao acabamento, usando tecidos selecionados com criterio.</p>
+        <p>Trabalhamos com pequenas producoes para manter a qualidade artesanal e a exclusividade que cada cliente merece. Nao seguimos modas — criamos o que dura.</p>
+        <p>Atendemos pedidos padrao pelo catalogo e pedidos especiais sob medida, sempre com acompanhamento proximo e entrega responsavel.</p>
+        <br>
+        <button class="btn-primary" onclick="showSection('catalogo')">Explorar colecao</button>
+      </div>
+      <div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div class="sobre-stat">
+            <span class="stat-num">+350</span>
+            <span class="stat-label">Clientes atendidos</span>
+          </div>
+          <div class="sobre-stat">
+            <span class="stat-num">7</span>
+            <span class="stat-label">Anos de confeccao autoral</span>
+          </div>
+          <div class="sobre-stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Producao nacional</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTATO BAR -->
+<div class="contato-bar">
+  <h3>Vamos criar algo <em>juntos?</em></h3>
+  <div class="contato-links">
+    <a class="contato-link" href="https://wa.me/5527999999999" target="_blank">WhatsApp</a>
+    <a class="contato-link" href="mailto:contato@maisonverd.com.br">E-mail</a>
+    <span class="contato-link" onclick="showSection('pedido')">Pedido especial</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Maison Verd</div>
+    <p class="footer-txt" style="margin-top:0.5rem;">Vestuario de autor — Espirito Santo, Brasil</p>
+  </div>
+  <p class="footer-txt">© 2025 Maison Verd. Todos os direitos reservados.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-img" id="modal-img"></div>
+    <div class="modal-body">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <p class="modal-cat" id="modal-cat"></p>
+      <h3 class="modal-name" id="modal-name"></h3>
+      <p class="modal-price" id="modal-price"></p>
+      <p class="modal-desc" id="modal-desc"></p>
+      <p class="size-label">Tamanho</p>
+      <div class="size-options" id="modal-sizes"></div>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="closeModal();showSection('pedido')">Encomendar</button>
+        <button class="btn-ghost" onclick="closeModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const produtos = [
+  { id:1, nome:'Camisa Verd Classic', cat:'camisetas', preco:'R$ 189', icon:'☾', desc:'Camisa estruturada em algodao egipcio 180g. Corte reto com caimento preciso, gola italiana, costuras duplas. Disponivel em branco, preto e areia.', sizes:['P','M','G','GG'], tag:'Novo', destaque:true },
+  { id:2, nome:'Blusa Silk Fluid', cat:'camisetas', preco:'R$ 245', icon:'◈', desc:'Blusa de seda artificial com caimento fluido e manga longa levemente ampla. Ideal para composicoes elegantes e casuais.', sizes:['PP','P','M','G'], tag:null, destaque:true },
+  { id:3, nome:'Calca Wide Verd', cat:'calcas', preco:'R$ 320', icon:'▬', desc:'Calca de corte wide leg em tecido de linho pesado. Cintura alta com passadores e detalhe de dobra frontal. Atemporal.', sizes:['36','38','40','42','44'], tag:'Destaque', destaque:true },
+  { id:4, nome:'Calca Slim Canvas', cat:'calcas', preco:'R$ 275', icon:'▮', desc:'Canvas de algodao com stretch leve. Silhueta slim sem comprometer o conforto. Bolsos laterais e traseiros funcionais.', sizes:['38','40','42','44'], tag:null, destaque:false },
+  { id:5, nome:'Vestido Noite Verd', cat:'vestidos', preco:'R$ 490', icon:'✦', desc:'Vestido midi em cetim acetinado. Decote discreto, abertura lateral, forro completo. Uma peca para ocasioes especiais.', sizes:['PP','P','M','G'], tag:'Exclusivo', destaque:true },
+  { id:6, nome:'Vestido Solar', cat:'vestidos', preco:'R$ 310', icon:'◯', desc:'Vestido curto em crepe leve com print exclusivo. Alcinhas ajustaveis e saia com movimento gracioso.', sizes:['P','M','G'], tag:null, destaque:false },
+  { id:7, nome:'Casaco Autumm', cat:'casacos', preco:'R$ 620', icon:'◫', desc:'Casaco comprido em la mista com forro de viscose. Botoes de madeira, bolsos internos. Colecao outono limitada.', sizes:['P','M','G','GG'], tag:'Limitado', destaque:true },
+  { id:8, nome:'Jaqueta Oversize', cat:'casacos', preco:'R$ 440', icon:'▢', desc:'Jaqueta oversized em algodao heavy com lavagem especial. Bolsos chapados e acabamento sem estrutura para visual descontraido.', sizes:['M','G','GG'], tag:null, destaque:false },
+  { id:9, nome:'Lenco Verd Signature', cat:'acessorios', preco:'R$ 95', icon:'∿', desc:'Lenco em seda 100% com estampa exclusiva Verd. Pode ser usado no pescoco, no cabelo ou na bolsa.', sizes:['Unico'], tag:null, destaque:false },
+  { id:10, nome:'Cinto Artesanal', cat:'acessorios', preco:'R$ 175', icon:'○', desc:'Cinto em couro legitimo com fivela escovada. Produzido por artesao parceiro no ES. Diponivel em preto e marrom.', sizes:['P','M','G'], tag:'Artesanal', destaque:false },
+  { id:11, nome:'Camisa Linho Solto', cat:'camisetas', preco:'R$ 210', icon:'◌', desc:'Camisa masculina/feminina em linho puro. Corte amplo com botoes de madrepola. Respirabilidade maxima para o verao.', sizes:['P','M','G','GG'], tag:null, destaque:false },
+  { id:12, nome:'Short Sailor', cat:'calcas', preco:'R$ 195', icon:'▭', desc:'Short de alfaiataria em tecido canelado. Cintura elasticada com amarracao frontal. Corte alto e reto.', sizes:['36','38','40','42'], tag:null, destaque:false },
+];
+
+function createCard(p) {
+  return `<div class="product-card" onclick="openModal(${p.id})">
+    <div class="product-img">
+      <span class="product-placeholder">${p.icon}</span>
+      <div class="product-overlay"><button class="overlay-btn">Ver detalhes</button></div>
+      ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ''}
+    </div>
+    <div class="product-info">
+      <p class="product-cat">${p.cat}</p>
+      <h3 class="product-name">${p.nome}</h3>
+      <p class="product-desc">${p.desc.substring(0,80)}...</p>
+      <div class="product-footer">
+        <span class="product-price">${p.preco}</span>
+        <div class="product-sizes">${p.sizes.slice(0,3).map(s=>`<span class="size-dot">${s}</span>`).join('')}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Render destaques
+document.getElementById('destaque-grid').innerHTML = produtos.filter(p=>p.destaque).map(createCard).join('');
+
+// Render catalog
+function renderCatalog(cat) {
+  const filtered = cat === 'todos' ? produtos : produtos.filter(p=>p.cat===cat);
+  document.getElementById('catalog-grid').innerHTML = filtered.map(createCard).join('');
+}
+renderCatalog('todos');
+
+// Filter
+document.getElementById('filter-bar').addEventListener('click', e => {
+  if (!e.target.classList.contains('filter-btn')) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderCatalog(e.target.dataset.cat);
+});
+
+// Modal
+function openModal(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modal-img').innerHTML = `<span style="font-size:5rem;color:rgba(184,154,90,0.2)">${p.icon}</span>`;
+  document.getElementById('modal-cat').textContent = p.cat;
+  document.getElementById('modal-name').textContent = p.nome;
+  document.getElementById('modal-price').textContent = p.preco;
+  document.getElementById('modal-desc').textContent = p.desc;
+  document.getElementById('modal-sizes').innerHTML = p.sizes.map(s =>
+    `<button class="size-option" onclick="selectSize(this)">${s}</button>`).join('');
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function selectSize(el) {
+  document.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// Section navigation
+function showSection(sec) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + sec).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const map = { home:0, catalogo:1, pedido:2, sobre:3 };
+  const links = document.querySelectorAll('.nav-links a');
+  if (map[sec] !== undefined) links[map[sec]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Char tags
+function toggleTag(el) { el.classList.toggle('selected'); }
+
+// Form submit
+function submitForm() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const contato = document.getElementById('f-contato').value.trim();
+  const tipo = document.getElementById('f-tipo').value;
+  const desc = document.getElementById('f-descricao').value.trim();
+  const err = document.getElementById('form-error');
+  if (!nome || !contato || !tipo || !desc) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  document.getElementById('form-container').style.display = 'none';
+  document.getElementById('success-msg').classList.add('show');
+}
+
+function resetForm() {
+  document.getElementById('f-nome').value = '';
+  document.getElementById('f-contato').value = '';
+  document.getElementById('f-tipo').value = '';
+  document.getElementById('f-tam').value = '';
+  document.getElementById('f-descricao').value = '';
+  document.getElementById('f-orcamento').value = '';
+  document.getElementById('f-prazo').value = '';
+  document.getElementById('f-tecido').value = '';
+  document.querySelectorAll('.char-tag').forEach(t => t.classList.remove('selected'));
+  document.getElementById('form-container').style.display = 'block';
+  document.getElementById('success-msg').classList.remove('show');
+}
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+</script>
+</body>
+</html>
